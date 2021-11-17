@@ -14,8 +14,10 @@ class CreateColumnUsernameToUsersTable extends Migration
     public function up()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->string('username');// tạo cột
-        });
+			$table->string('mobile');
+			$table->string('username');// tạo cột
+			$table->text('avatar_path');
+		});
     }
 
     /**
@@ -26,7 +28,9 @@ class CreateColumnUsernameToUsersTable extends Migration
     public function down()
     {
         Schema::table('users', function (Blueprint $table) {
-            $table->dropColumn('username');// xóa cột
-        });
+			$table->dropColumn('mobile');
+			$table->dropColumn('username');// tạo cột
+			$table->dropColumn('avatar_path');
+		});
     }
 }
