@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProductVagrantsTable extends Migration
+class CreateOrderProductsTable extends Migration
 {
 	/**
 	 * Run the migrations.
@@ -13,11 +13,13 @@ class CreateProductVagrantsTable extends Migration
 	 */
 	public function up()
 	{
-		Schema::create('product_vagrant', function (Blueprint $table) {
+		Schema::create('order_product', function (Blueprint $table) {
 			$table->id();
+			$table->unsignedBigInteger('order_id');
 			$table->unsignedBigInteger('product_id');
-			$table->unsignedBigInteger('vagrant_id');
-			$table->unsignedBigInteger('vagrant_value_id');
+			$table->string('price')->default(0);
+			$table->string('amount')->default(1);
+			$table->unsignedBigInteger('product_vagrant_id');
 			$table->timestamps();
 		});
 	}
@@ -29,6 +31,6 @@ class CreateProductVagrantsTable extends Migration
 	 */
 	public function down()
 	{
-		Schema::dropIfExists('product_vagrant');
+		Schema::dropIfExists('order_product');
 	}
 }

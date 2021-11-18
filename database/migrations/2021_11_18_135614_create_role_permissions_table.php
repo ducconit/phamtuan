@@ -4,7 +4,7 @@ use Illuminate\Database\Migrations\Migration;
 use Illuminate\Database\Schema\Blueprint;
 use Illuminate\Support\Facades\Schema;
 
-class CreateProductVagrantsTable extends Migration
+class CreateRolePermissionsTable extends Migration
 {
 	/**
 	 * Run the migrations.
@@ -13,11 +13,10 @@ class CreateProductVagrantsTable extends Migration
 	 */
 	public function up()
 	{
-		Schema::create('product_vagrant', function (Blueprint $table) {
+		Schema::create('role_permissions', function (Blueprint $table) {
 			$table->id();
-			$table->unsignedBigInteger('product_id');
-			$table->unsignedBigInteger('vagrant_id');
-			$table->unsignedBigInteger('vagrant_value_id');
+			$table->unsignedBigInteger('role_id');
+			$table->unsignedBigInteger('permission_id');
 			$table->timestamps();
 		});
 	}
@@ -29,6 +28,6 @@ class CreateProductVagrantsTable extends Migration
 	 */
 	public function down()
 	{
-		Schema::dropIfExists('product_vagrant');
+		Schema::dropIfExists('role_permissions');
 	}
 }
