@@ -24,7 +24,7 @@ class CreateProductsTable extends Migration
 			$table->unsignedBigInteger('category_id');// Danh mục cha có thể là category level 2,3
 			$table->unsignedBigInteger('category_1')->comment('id danh mục level 1 ');
 			$table->unsignedBigInteger('category_2')->comment('id danh mục level 2 ');
-			$table->unsignedBigInteger('category_3')->comment('id danh mục level 3 ');
+			$table->unsignedBigInteger('category_3')->nullable()->comment('id danh mục level 3 ');
 			$table->unsignedBigInteger('brand_id')->nullable();
 			$table->timestamps();
 		});

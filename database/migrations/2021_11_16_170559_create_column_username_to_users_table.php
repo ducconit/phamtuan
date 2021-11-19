@@ -16,7 +16,7 @@ class CreateColumnUsernameToUsersTable extends Migration
         Schema::table('users', function (Blueprint $table) {
 			$table->string('mobile');
 			$table->string('username');// tạo cột
-			$table->text('avatar_path');
+			$table->text('avatar_path')->nullable();
 		});
     }
 
