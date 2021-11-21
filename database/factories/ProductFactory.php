@@ -34,7 +34,6 @@ class ProductFactory extends Factory
 			'meta_description' => $faker->text(500),
 			'description' => $faker->text(1000),
 			'price' => $faker->numberBetween(100000000, 10000000000),
-			'category_id' => $categoryId,
 			'category_1' => rand(1, 4),
 			'category_2' => $categoryId
 		];

@@ -7,5 +7,13 @@ use Illuminate\Database\Eloquent\Model;
 
 class Product extends Model
 {
-    use HasFactory;
+	use HasFactory;
+
+	/**
+	 * Danh sách danh mục sản phẩm thuộc về
+	 */
+	public function categories()
+	{
+		return $this->belongsToMany(Category::class, 'category_product');
+	}
 }

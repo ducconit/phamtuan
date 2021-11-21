@@ -2,6 +2,7 @@
 
 namespace Database\Seeders;
 
+use App\Models\Category;
 use App\Models\Product;
 use Illuminate\Database\Seeder;
 
@@ -15,6 +16,11 @@ class ProductSeeder extends Seeder
 	public function run()
 	{
 		Product::truncate();
-		Product::factory(100)->create();
+		// Danh sách category
+		$categories = Category::get('id')->pluck('id');
+
+		Product::factory(100)->afterCreating(function ($product) use ($categories) {
+			$product->categories()->attach($categories->random());
+		})->create();
 	}
 }
