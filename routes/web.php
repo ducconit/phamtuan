@@ -13,6 +13,6 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::get('/', function () {
-	return view('welcome');
-});
+//Route::get('/', ['controller', 'method'])->name('index');
+Route::view('/','welcome');
+Route::resource('category', \App\Http\Controllers\CategoryController::class);

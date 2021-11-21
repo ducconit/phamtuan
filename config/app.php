@@ -80,7 +80,7 @@ return [
     |
     */
 
-    'locale' => 'en',
+    'locale' => 'vi',
 
     /*
     |--------------------------------------------------------------------------
@@ -166,16 +166,19 @@ return [
          * Package Service Providers...
          */
 
-        /*
-         * Application Service Providers...
-         */
-        App\Providers\AppServiceProvider::class,
-        App\Providers\AuthServiceProvider::class,
-        // App\Providers\BroadcastServiceProvider::class,
-        App\Providers\EventServiceProvider::class,
-        App\Providers\RouteServiceProvider::class,
+		/*
+		 * Application Service Providers...
+		 */
+		App\Providers\AppServiceProvider::class,
+		App\Providers\AuthServiceProvider::class,
+		// App\Providers\BroadcastServiceProvider::class,
+		App\Providers\EventServiceProvider::class,
+		App\Providers\RouteServiceProvider::class,
+		// Dịch vụ quản trị website
+		// đính kèm
+		\App\Admin\Providers\AdminServiceProvider::class,
 
-    ],
+	],
 
     /*
     |--------------------------------------------------------------------------
