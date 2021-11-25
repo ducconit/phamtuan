@@ -4,6 +4,7 @@ namespace App\Admin\Providers;
 
 use App\Admin\Middlewares\Admin;
 use App\Admin\Middlewares\GuestAdmin;
+use Illuminate\Http\Request;
 use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
@@ -39,7 +40,11 @@ class AdminServiceProvider extends ServiceProvider
 
 	public function boot()
 	{
+		// sửa lại phần view
 		$this->viewCustoms();
+
+		// sửa lại phần request
+		$this->customRequest();
 	}
 
 	/**
@@ -54,5 +59,14 @@ class AdminServiceProvider extends ServiceProvider
 
 		//tạo view mặc định phân trang
 		Paginator::defaultView('admin::components.pagination');
+	}
+
+	private function customRequest()
+	{
+		// Thêm method activeByRoute vào class Request
+		Request::macro('activeByRoute', function (...$routeName) {
+			// Nếu route name của request hiện tại bằng route name đã khai báo thì trả về chữ active còn không thì không có gì
+			return $this->routeIs($routeName) ? 'active' : '';
+		});
 	}
 }

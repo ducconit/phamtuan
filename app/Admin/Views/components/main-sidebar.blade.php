@@ -35,7 +35,7 @@
                 <!-- Add icons to the links using the .nav-icon class
                      with font-awesome or any other icon font library -->
                 <li class="nav-item">
-                    <a href="#" class="nav-link">
+                    <a href="#" class="nav-link {{ Request::activeByRoute('admin::index') }}">
                         <i class="nav-icon fas fa-tachometer-alt"></i>
                         <p>
                             Dashboard
@@ -43,7 +43,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('admin::category.index') }}" class="nav-link">
+                    <a href="{{ route('admin::category.index') }}" class="nav-link {{ Request::activeByRoute('admin::category.index') }}">
                         <i class="nav-icon fas fa-layer-group"></i>
                         <p>
                             {{ __('Danh sách danh mục') }}

@@ -25,9 +25,9 @@
                         <a href="{{ route('admin::category.edit',$category->id) }}" class="btn btn-warning">
                             <i class="far fa-edit"></i>
                         </a>
-                        <a href="#" class="btn btn-danger btn-delete" data-id="{{ $category->id }}">
+                        <button type="button" class="btn btn-danger btn-delete" data-id="{{ $category->id }}">
                             <i class="far fa-trash-alt"></i>
-                        </a>
+                        </button>
                     </td>
                 </tr>
             @empty
@@ -40,3 +40,40 @@
         {{ $categories->links() }}
     </div>
 @endsection
+@push('js')
+    <script>
+        $(document).ready(function () {
+            $('.btn-delete').click(function (e) {
+                e.preventDefault();
+                let self = $(this);
+                let cateID = self.attr('data-id');
+                Swal.fire({
+                    title: "{{ __('Bạn có chắc chắn muốn xóa danh mục này không?') }}",
+                    showCancelButton: true,
+                    cancelButtonText: "{{ __('Huỷ') }}",
+                    confirmButtonText: "{{ __('Đồng ý') }}",
+                }).then(function (result) {
+                    if (result.isConfirmed) {
+                        self.prop('disabled', true);
+                        $.ajax("{{ route('admin::category.destroy','') }}/" + cateID, {
+                            type: 'post',
+                            data: {
+                                _method: 'delete'
+                            }
+                        }).done(function (res) {
+                            if (res.status !== 200) {
+                                alert(res.message);
+                                return;
+                            }
+                            self.parents('tr').remove();
+                        }).fail(function (res) {
+                                self.prop('disabled', false);
+                                alert(res.message);
+                            }
+                        )
+                    }
+                })
+            })
+        })
+    </script>
+@endpush
