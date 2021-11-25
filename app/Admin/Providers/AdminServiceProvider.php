@@ -4,6 +4,7 @@ namespace App\Admin\Providers;
 
 use App\Admin\Middlewares\Admin;
 use App\Admin\Middlewares\GuestAdmin;
+use Illuminate\Pagination\Paginator;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\View;
 use Illuminate\Support\ServiceProvider;
@@ -46,8 +47,12 @@ class AdminServiceProvider extends ServiceProvider
 	 */
 	private function viewCustoms()
 	{
+		// Tạo biến toàn cục
 		View::composer('admin::*', function (\Illuminate\Contracts\View\View $view) {
 			$view->with('auth', Auth::guard('admin')->user());
 		});
+
+		//tạo view mặc định phân trang
+		Paginator::defaultView('admin::components.pagination');
 	}
 }

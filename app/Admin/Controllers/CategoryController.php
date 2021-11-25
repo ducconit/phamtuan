@@ -13,7 +13,7 @@ class CategoryController extends Controller
 	public function index()
 	{
 		// Danh sách danh mục
-		$categories = Category::get();
+		$categories = Category::with('parent')->withCount('products')->paginate(5);
 
 		// Tên trang
 		$pageName = __('Quản lý danh mục');

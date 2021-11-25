@@ -22,7 +22,14 @@ Route::middleware(['web'])->prefix('admin')->name('admin::')->group(function () 
 		 * Quản lý danh mục
 		 */
 		Route::prefix('category')->name('category.')->group(function () {
+			// Danh sách
 			Route::get('/', [CategoryController::class, 'index'])->name('index');
+			// xem chi tiết
+			Route::get('{id}', [CategoryController::class, 'show'])->name('show');
+			// sửa
+			Route::get('edit/{id}', [CategoryController::class, 'edit'])->name('edit');
+			// Xóa
+			Route::delete('destroy/{id}', [CategoryController::class, 'destroy'])->name('destroy');
 		});
 	});
 });
