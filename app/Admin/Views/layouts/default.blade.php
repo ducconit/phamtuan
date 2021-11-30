@@ -74,6 +74,16 @@
 <script src="{{ asset('adminlte/plugins/sweetalert2/sweetalert2.js') }}"></script>
 <!-- AdminLTE App -->
 <script src="{{ asset('adminlte/js/adminlte.js') }}"></script>
+<script src="{{ asset('js/main.js') }}"></script>
+<script>
+    function checkRecordTable(selector) {
+        let table = $(selector);
+        if (table.find('tbody tr').length == 0) {
+            let countTh = table.find('thead th').length;
+            table.find('tbody').html('<tr><td colspan="' + countTh + '" class="text-center">{{ __('Không có dữ liệu hiển thị') }}</td></tr>')
+        }
+    }
+</script>
 @stack('js')
 </body>
 </html>

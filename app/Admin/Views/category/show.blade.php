@@ -1,7 +1,6 @@
 @extends('admin::layouts.default')
 @section('content')
-    <a href="{{ url()->previous()==url()->current()?route('admin::category.index'):url()->previous() }}"
-       class="btn btn-info">
+    <a href="{{ \Request::buttonBack('admin::category.index') }}" class="btn btn-info">
         <i class="fas fa-chevron-left"></i>
         {{ __('Quay lại') }}
     </a>

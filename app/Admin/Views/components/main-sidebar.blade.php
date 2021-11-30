@@ -13,7 +13,7 @@
                 <img src="{{ asset($auth->avatar) }}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="#" class="d-block">{{ $auth->name }}</a>
+                <a href="{{ route('admin::auth.index') }}" class="d-block">{{ $auth->name }}</a>
             </div>
         </div>
 
@@ -43,7 +43,7 @@
                     </a>
                 </li>
                 <li class="nav-item">
-                    <a href="{{ route('admin::category.index') }}" class="nav-link {{ Request::activeByRoute('admin::category.index') }}">
+                    <a href="{{ route('admin::category.index') }}" class="nav-link {{ Request::activeByRoute('admin::category.*') }}">
                         <i class="nav-icon fas fa-layer-group"></i>
                         <p>
                             {{ __('Danh sách danh mục') }}

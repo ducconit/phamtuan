@@ -4,6 +4,8 @@ namespace App\Admin\Controllers;
 
 use App\Http\Controllers\Controller;
 use App\Models\Category;
+use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Validator;
 
 class CategoryController extends Controller
 {
@@ -13,7 +15,7 @@ class CategoryController extends Controller
 	public function index()
 	{
 		// Danh sách danh mục
-		$categories = Category::with('parent')->withCount('products')->paginate(5);
+		$categories = Category::with('parent')->withCount('products')->paginate();
 
 		// Tên trang
 		$pageName = __('Quản lý danh mục');
@@ -62,17 +64,124 @@ class CategoryController extends Controller
 	}
 
 	/**
+	 * Giao diện thêm mới
+	 */
+	public function create()
+	{
+		$pageName = __('Thêm danh mục');
+
+		// Danh sách danh mục cha
+		$categories = Category::getParent()->with('children:id,name,parent_id')->get(['id', 'name']);
+
+		$view = compact('pageName', 'categories');
+
+		return view('admin::category.create')->with($view);
+	}
+
+	/**
+	 * Thêm danh mục vào database
+	 */
+	public function store(Request $request)
+	{
+		//Validation
+		$validator = Validator::make($request->all(), [
+			'name' => 'required|string|max:255',
+			'slug' => 'required|string|max:255|unique:categories,slug',
+			'parent_id' => 'nullable|exists:categories,id',
+			'meta_title' => 'nullable|required_with:meta_description|string|max:255',
+			'meta_description' => 'nullable|required_with:meta_title|string|max:1000',
+		]);
+
+		// validation fail
+		if ($validator->fails()) {
+			return $this->response($validator->errors(), 422, $validator->errors()->first());
+		}
+
+		// Cấp1
+		$level = 1;
+
+		// Nếu có danh mục cha thì
+		if ($parentId = $request->get('parent_id')) {
+			$level = 2;
+			$parent = Category::findOrFail($parentId);
+
+			// Nếu có danh mục cha
+			if ($parent->parent) {
+				$level = 3;
+			}
+
+		}
+
+		Category::query()->create([
+			'name' => $request->get('name'),
+			'slug' => $request->get('slug'),
+			'level' => $level,
+			'parent_id' => $request->get('parent_id') ?? 0,
+			'meta_title' => $request->get('meta_title'),
+			'meta_description' => $request->get('meta_description'),
+		]);
+
+		return $this->response(null, 200, __('Thêm danh mục thành công'));
+	}
+
+	/**
+	 * Giao diện chỉnh sửa
+	 */
+	public function edit($id)
+	{
+		$pageName = __('Chỉnh sửa danh mục');
+
+		$category = Category::findOrFail($id);
+
+		$view = compact('pageName', 'category');
+
+		return view('admin::category.edit')->with($view);
+	}
+
+	/**
 	 * Xóa danh mục
 	 */
 	public function destroy($id)
 	{
-		$category = Category::findOrFail($id);
+		$category = Category::withTrashed()->findOrFail($id);
 
 		// Xóa các quan hệ sản phẩm
 		$category->products()->detach();
 
-		//Xoá mềm - chuyển vào thùng rác
-		$category->restore();
+		// Xóa vĩnh viễn
+		if ($category->deleted_at) {
+			$category->forceDelete();
+		} else {
+			//Xoá mềm - chuyển vào thùng rác
+			$category->delete();
+		}
+
 		return $this->response(null, 200, __('Đã xoá danh mục thành công'));
+	}
+
+	/**
+	 * Thùng rác
+	 * Các danh mục bị xóa mềm
+	 */
+	public function trash()
+	{
+		$pageName = __('Thùng rác');
+
+		// Danh sách danh mục bị xóa
+		$categories = Category::onlyTrashed()->paginate();
+
+		$view = compact('pageName', 'categories');
+
+		return view('admin::category.trash')->with($view);
+	}
+
+	/**
+	 * Khôi phụ danh mục bị xóa
+	 */
+	public function restore(Request $request, $id)
+	{
+		$category = Category::onlyTrashed()->findOrFail($id);
+		$category->restore();
+		return $this->response(null, 200, __('Khôi phục thành công'));
 	}
 }

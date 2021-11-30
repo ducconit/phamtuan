@@ -9,7 +9,28 @@ use Illuminate\Support\Facades\Validator;
 
 class AuthController extends Controller
 {
-	/**
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	/**================================================================
 	 * Trả về giáo diện đăng nhập
 	 */
 	public function showFormLogin()

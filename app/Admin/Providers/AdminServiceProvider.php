@@ -68,5 +68,13 @@ class AdminServiceProvider extends ServiceProvider
 			// Nếu route name của request hiện tại bằng route name đã khai báo thì trả về chữ active còn không thì không có gì
 			return $this->routeIs($routeName) ? 'active' : '';
 		});
+
+		// Nút quay lại
+		Request::macro('buttonBack', function ($routeName = '') {
+			if (!$routeName) {
+				return url()->previous();
+			}
+			return url()->previous() == url()->current() ? route($routeName) : url()->previous();
+		});
 	}
 }
