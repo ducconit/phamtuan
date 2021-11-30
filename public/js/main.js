@@ -38,3 +38,8 @@ $('[to-slug]').keyup(function (e) {
     let target = $(this).attr('to-slug');
     $(target).val($(this).val().slug())
 })
+
+$('input[type=file][preview-avatar]').change(function (e) {
+    let target=$($(this).attr('data-target'));
+    target.attr('src',(window.URL ? URL : webkitURL).createObjectURL($(this).prop('files')[0]));
+})

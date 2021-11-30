@@ -44,7 +44,8 @@ Route::middleware(['web'])->prefix('admin')->name('admin::')->group(function () 
 		 * Trang cá nhân
 		 */
 		Route::prefix('auth')->name('auth.')->group(function () {
-			Route::get('/', [\App\Admin\Controllers\AuthController::class, 'index'])->name('index');
+			Route::get('/', [\App\Admin\Controllers\AuthController::class, 'profile'])->name('profile');
+			Route::put('save-profile', [\App\Admin\Controllers\AuthController::class, 'saveProfile'])->name('profile');
 		});
 	});
 });

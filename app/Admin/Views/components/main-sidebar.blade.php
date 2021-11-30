@@ -13,7 +13,7 @@
                 <img src="{{ asset($auth->avatar) }}" class="img-circle elevation-2" alt="User Image">
             </div>
             <div class="info">
-                <a href="{{ route('admin::auth.index') }}" class="d-block">{{ $auth->name }}</a>
+                <a href="{{ route('admin::auth.profile') }}" class="d-block">{{ $auth->name }}</a>
             </div>
         </div>
 
