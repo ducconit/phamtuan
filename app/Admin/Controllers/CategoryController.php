@@ -133,9 +133,60 @@ class CategoryController extends Controller
 
 		$category = Category::findOrFail($id);
 
-		$view = compact('pageName', 'category');
+		// Danh sách danh mục cha
+		$categories = Category::getParent()->with('children:id,name,parent_id')->get(['id', 'name']);
+
+		$view = compact('pageName', 'category','categories');
 
 		return view('admin::category.edit')->with($view);
+	}
+
+	/**
+	 * Cập nhật danh mục vào database
+	 */
+	public function update(Request $request,$id)
+	{
+		$category = Category::findOrFail($id);
+
+		//Validation
+		$validator = Validator::make($request->all(), [
+			'name' => 'required|string|max:255',
+			'slug' => 'required|string|max:255|unique:categories,slug,'.$id,
+			'parent_id' => 'nullable|exists:categories,id',
+			'meta_title' => 'nullable|required_with:meta_description|string|max:255',
+			'meta_description' => 'nullable|required_with:meta_title|string|max:1000',
+		]);
+
+		// validation fail
+		if ($validator->fails()) {
+			return $this->response($validator->errors(), 422, $validator->errors()->first());
+		}
+
+		// Cấp1
+		$level = 1;
+
+		// Nếu có danh mục cha thì
+		if ($parentId = $request->get('parent_id')) {
+			$level = 2;
+			$parent = Category::findOrFail($parentId);
+
+			// Nếu có danh mục cha
+			if ($parent->parent) {
+				$level = 3;
+			}
+
+		}
+
+		$category->update([
+			'name' => $request->get('name'),
+			'slug' => $request->get('slug'),
+			'level' => $level,
+			'parent_id' => $request->get('parent_id') ?? 0,
+			'meta_title' => $request->get('meta_title'),
+			'meta_description' => $request->get('meta_description'),
+		]);
+
+		return $this->response(null, 200, __('Cập nhật danh mục thành công'));
 	}
 
 	/**
